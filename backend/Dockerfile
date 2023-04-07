@@ -44,6 +44,6 @@ ENV ROCKET_ENV=production
 
 EXPOSE 8000
 
-COPY --from=builder /code/target/release/react-rust-postgres /react-rust-postgres
+COPY --from=builder /code/target/release/vietaku /vietaku
 
-CMD [ "/react-rust-postgres" ]
+CMD [ "/vietaku" ]

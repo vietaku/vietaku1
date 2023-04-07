@@ -1,32 +1,32 @@
-name: react-rust-postgres
+name: vietaku
 services:
   frontend:
     build:
       context: frontend
-      target: development
+      target: builder
     networks:
       - client-side
     ports:
       - 3000:3000
     volumes:
-      - ./frontend/src:/code/src:ro
+      - /mnt/data/service/vietaku/frontend/src:/code/src:ro
 
   backend:
     build:
       context: backend
-      target: development
+      target: builder
     environment:
       - ADDRESS=0.0.0.0:8000
       - RUST_LOG=debug
       - PG_DBNAME=postgres
       - PG_HOST=db
-      - PG_USER=postgres
-      - PG_PASSWORD=mysecretpassword
+      - PG_USER=${POSTGRES_USER}
+      - PG_PASSWORD=${POSTGRES_PASSWORD}
     networks:
       - client-side
       - server-side
     volumes:
-      - ./backend/src:/code/src
+      - /mnt/data/service/vietaku/backend/src:/code/src
       - backend-cache:/code/target
     depends_on:
       - db
@@ -34,8 +34,10 @@ services:
   db:
     image: postgres:12-alpine
     restart: always
+    container_name: postgresql12
     environment:
-      - POSTGRES_PASSWORD=mysecretpassword
+      - POSTGRES_USER=${POSTGRES_USER}
+      - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
     networks:
       - server-side
     ports:
