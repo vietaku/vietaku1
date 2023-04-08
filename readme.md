@@ -1,4 +1,4 @@
-## Compose sample application
+## Test Workflow
 
 ### Use with Docker Development Environments
 
