@@ -23,7 +23,8 @@ jobs:
         cd ${{ secrets.WORK_DIR }}
         sudo git reset --hard HEAD
         sudo git checkout master
-        sudo git pull && sudo bash ./scripts/deploy.sh
+        sudo git pull origin master
+        sudo bash ./scripts/deploy.sh
         exit
     - name: cleanup
       run: rm -rf ~/.ssh
