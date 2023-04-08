@@ -20,7 +20,7 @@ jobs:
     - name: connect and pull
       run: |
         ssh ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }}
-        cd ${{ secrets.WORK_DIR }}
+        cd /mnt/data/service/vietaku
         sudo git reset --hard HEAD
         sudo git checkout master
         sudo git pull origin master
