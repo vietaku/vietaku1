@@ -26,6 +26,11 @@ fn address() -> String {
     std::env::var("ADDRESS").unwrap_or_else(|_| "127.0.0.1:8000".into())
 }
 
+#[get("/heath_check")]
+pub async fn health_check() -> HttpResponse {
+    HttpResponse::Ok().finish()
+}
+
 #[actix_web::main]
 async fn main() -> std::io::Result<()> {
     env_logger::init();
@@ -38,6 +43,7 @@ async fn main() -> std::io::Result<()> {
         App::new()
             .app_data(web::Data::new(pg_pool.clone()))
             .service(list_users)
+            .service(health_check)
     })
     .bind(&address)?
     .run()
