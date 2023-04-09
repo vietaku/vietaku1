@@ -16,12 +16,12 @@ services:
       context: ../backend
       target: dev-envs
     environment:
-      - RUST_LOG=debug
-      - PG_DBNAME=postgres
-      - PG_HOST=db
-      - PG_USER=postgres
-      - PG_PASSWORD=mysecretpassword
       - ADDRESS=0.0.0.0:8000
+      - RUST_LOG=debug
+      - PG_DBNAME=${POSTGRES_DB}
+      - PG_HOST=db
+      - PG_USER=${POSTGRES_USER}
+      - PG_PASSWORD=${POSTGRES_PASSWORD}
     networks:
       - client-side
       - server-side
@@ -34,7 +34,9 @@ services:
     image: postgres:12-alpine
     restart: always
     environment:
-      - POSTGRES_PASSWORD=mysecretpassword
+      - POSTGRES_DB=${POSTGRES_DB}
+      - POSTGRES_USER=${POSTGRES_USER}
+      - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
     networks:
       - server-side
     ports:
