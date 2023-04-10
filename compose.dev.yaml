@@ -3,18 +3,31 @@ services:
   frontend:
     build:
       context: frontend
-      target: dev-envs
+      target: development
+    container_name: frontend
     networks:
       - client-side
     ports:
       - 3000:3000
     volumes:
-      - ./frontend/src:/code/src:ro
+      - ~/vietaku/frontend/src:/code/src:ro
+
+  frontend-react:
+    build:
+      context: frontend_react
+      target: development
+    container_name: frontend-react
+    networks:
+      - client-side
+    ports:
+      - 3001:3001
+    volumes:
+      - ~/vietaku/frontend_react/src:/code/src:ro
 
   backend:
     build:
       context: backend
-      target: dev-envs
+      target: development
     environment:
       - ADDRESS=0.0.0.0:8000
       - RUST_LOG=debug
@@ -22,17 +35,19 @@ services:
       - PG_HOST=db
       - PG_USER=${POSTGRES_USER}
       - PG_PASSWORD=${POSTGRES_PASSWORD}
+    container_name: backend
     networks:
       - client-side
       - server-side
     volumes:
-      - ./backend/src:/code/src
+      - ~/vietaku/backend/src:/code/src
       - backend-cache:/code/target
     depends_on:
       - db
 
   db:
     image: postgres:12-alpine
+    container_name: db
     restart: always
     environment:
       - POSTGRES_DB=${POSTGRES_DB}
