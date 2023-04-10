@@ -8,18 +8,15 @@ WORKDIR /code
 COPY package.json /code/package.json
 COPY package-lock.json /code/package-lock.json
 RUN npm ci
-COPY . /code
 
+COPY . /code
 CMD [ "npm", "start" ]
 
-FROM development AS builder
 
+FROM development AS builder
 RUN npm run build
 
 FROM nginx:1.13-alpine
-
 COPY --from=builder /code/dist /usr/share/nginx/html
-
 EXPOSE 80
-
 CMD ["nginx", "-g", "daemon off;"]
